@@ -20,6 +20,8 @@ return new class extends Migration
             $table->unsignedInteger('stock')->default(0);
             $table->string('image')->nullable();
             $table->boolean('active')->default(true);
+            $table->unsignedInteger('views_count')->default(0); // contador rápido para reportes
+            $table->foreignId('brand_id')->nullable()->constrained()->onDelete('set null');
             $table->timestamps();
         });
     }
