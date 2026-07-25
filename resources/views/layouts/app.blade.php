@@ -1,12 +1,13 @@
+{{-- resources/views/layouts/app.blade.php --}}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>@yield('title', 'Arcade Shop')</title>
+    <title>@yield('title', 'Mi Tienda')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
-    <x-nav />
+    <x-header />
 
     <main>
         @yield('content')
