@@ -43,4 +43,12 @@ class Product extends Model
     public function getRouteKeyName(){
         return 'slug';
     }
+
+     public function images(){
+        return $this->hasMany(ProductImage::class)->orderBy('order');
+    }
+
+    public function primaryImage(){
+        return $this->hasOne(ProductImage::class)->where('is_primary', true);
+    }
 }
