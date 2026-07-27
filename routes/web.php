@@ -26,6 +26,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/carrito', [CartController::class, 'index'])->name('cart.index');
     Route::post('/carrito', [CartController::class, 'store'])->name('cart.store');
+    Route::delete('/carrito', [CartController::class, 'destroy'])->name('cart.destroy');
 
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/wishlist', [WishlistController::class, 'store'])->name('wishlist.store');

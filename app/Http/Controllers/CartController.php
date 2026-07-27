@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -41,5 +42,20 @@ class CartController extends Controller
         }
 
         return back()->with('success', 'Producto agregado al carrito.');
+    }
+
+    public function destroy(Request $request)
+    {
+        $request->validate([
+            'product_id' => ['required', 'exists:products,id'],
+        ]);
+
+        $cart = $request->user()->cart()->first();
+
+        if ($cart) {
+            $cart->items()->where('product_id', $request->product_id)->delete();
+        }
+
+        return back()->with('success', 'Producto removido del carrito.');
     }
 }

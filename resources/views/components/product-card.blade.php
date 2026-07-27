@@ -13,14 +13,29 @@
 
     <div class="mt-2">
         @auth
+            @php
+                $inCart = auth()->check() && auth()->user()->cart?->items()->where('product_id', $product->id)->exists();
+            @endphp
+
             <div class="flex gap-2">
-                <form action="{{ route('cart.store') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                    <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">
-                        Agregar al carrito
-                    </button>
-                </form>
+                @if ($inCart)
+                    <form action="{{ route('cart.destroy') }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded text-sm">
+                            Remover del carrito
+                        </button>
+                    </form>
+                @else
+                    <form action="{{ route('cart.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">
+                            Agregar al carrito
+                        </button>
+                    </form>
+                @endif
 
                 <form action="{{ route('wishlist.store') }}" method="POST">
                     @csrf
