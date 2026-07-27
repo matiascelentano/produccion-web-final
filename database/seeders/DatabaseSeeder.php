@@ -18,8 +18,12 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'Test User',
+            'name' => 'Test',
+            'last_name' => 'User',
+            'birth_date' => '1990-01-01',
+            'username' => 'test.user',
             'email' => 'test@example.com',
+            'role' => 'admin',
         ]);
         // Seed brands, categories and products (in this order)
         $this->call([

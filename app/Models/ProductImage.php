@@ -2,10 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class ProductImage extends Model
 {
+    use HasFactory;
+
     protected $fillable = ['product_id', 'path', 'order', 'is_primary'];
 
     protected $casts = [
@@ -19,7 +24,7 @@ class ProductImage extends Model
     // Accessor para la URL completa
     protected function url(): Attribute{
         return Attribute::make(
-            get: fn () => Storage::url($this->path),
+            get: fn () => str_starts_with($this->path, 'http') ? $this->path : asset($this->path),
         );
     }
 }

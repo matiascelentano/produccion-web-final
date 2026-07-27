@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable
 {
+    use HasFactory;
     protected $fillable = ['name', 'last_name', 'birth_date', 'username', 'email', 'password', 'role'];
 
     protected $hidden = [

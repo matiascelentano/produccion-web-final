@@ -25,11 +25,14 @@ class BrandSeeder extends Seeder
         ];
 
         foreach ($brands as $name) {
-            Brand::firstOrCreate([
-                'slug' => Str::slug($name),
-            ], [
-                'name' => $name,
-            ]);
+            $slug = Str::slug($name);
+
+            if (! Brand::where('slug', $slug)->exists()) {
+                Brand::factory()->create([
+                    'name' => $name,
+                    'slug' => $slug,
+                ]);
+            }
         }
     }
 }

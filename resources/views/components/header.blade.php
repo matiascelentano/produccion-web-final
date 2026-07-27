@@ -41,7 +41,7 @@
                     @endif
                 </a>
 
-                <a href="{{ route('orders.index') }}">Mis pedidos</a>
+                {{--<a href="{{ route('orders.index') }}">Mis pedidos</a>
 
                 <div class="relative group">
                     <button>{{ auth()->user()->name }}</button>
@@ -53,6 +53,7 @@
                         </form>
                     </div>
                 </div>
+                --}}
             @else
                 <a href="{{ route('login') }}">Iniciar sesión</a>
                 <a href="{{ route('register') }}" class="bg-blue-600 text-white px-3 py-1 rounded">

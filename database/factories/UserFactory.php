@@ -24,9 +24,17 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $firstName = fake()->firstName();
+        $lastName = fake()->lastName();
+        $username = Str::slug($firstName . '.' . $lastName) . fake()->numberBetween(1, 99);
+
         return [
-            'name' => fake()->name(),
+            'name' => $firstName,
+            'last_name' => $lastName,
+            'birth_date' => fake()->date('Y-m-d', '-18 years'),
+            'username' => $username,
             'email' => fake()->unique()->safeEmail(),
+            'role' => 'cliente',
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),

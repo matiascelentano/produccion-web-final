@@ -23,12 +23,15 @@ class CategorySeeder extends Seeder
         ];
 
         foreach ($categories as $name) {
-            Category::firstOrCreate([
-                'slug' => Str::slug($name),
-            ], [
-                'name' => $name,
-                'description' => null,
-            ]);
+            $slug = Str::slug($name);
+
+            if (! Category::where('slug', $slug)->exists()) {
+                Category::factory()->create([
+                    'name' => $name,
+                    'slug' => $slug,
+                    'description' => null,
+                ]);
+            }
         }
     }
 }

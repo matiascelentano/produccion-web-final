@@ -8,7 +8,7 @@ use Illuminate\View\Component;
 
 class Header extends Component
 {
-public int $cartCount;
+    public int $cartCount;
 
     public function __construct()
     {

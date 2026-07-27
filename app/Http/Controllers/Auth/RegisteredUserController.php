@@ -3,33 +3,33 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\RegisterRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
-class RegisterRequest extends FormRequest
+class RegisteredUserController extends Controller
 {
-    public function authorize(): bool
+    public function create(): View
     {
-        return true;
+        return view('auth.register');
     }
 
-    public function rules(): array
+    public function store(RegisterRequest $request): RedirectResponse
     {
-        return [
-            'name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'birth_date' => ['required', 'date', 'before:today'],
-            'username' => ['required', 'string', 'max:255', 'unique:users,username'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'confirmed', Password::defaults()],
-        ];
-    }
+        $user = User::create([
+            'name' => $request->name,
+            'last_name' => $request->last_name,
+            'birth_date' => $request->birth_date,
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => $request->password,
+            'role' => 'cliente',
+        ]);
 
-    public function messages(): array
-    {
-        return [
-            'email.unique' => 'Ya existe una cuenta registrada con ese email.',
-            'username.unique' => 'Ese nombre de usuario ya está en uso.',
-            'password.confirmed' => 'Las contraseñas no coinciden.',
-        ];
+        Auth::login($user);
+
+        return redirect()->route('home');
     }
 }

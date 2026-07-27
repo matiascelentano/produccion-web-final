@@ -11,21 +11,32 @@
         <p class="text-gray-600">{{ $product->price_formatted }}</p>
     </a>
 
-    <div class="mt-2 flex gap-2">
-        <form action="{{ route('cart.store') }}" method="POST">
-            @csrf
-            <input type="hidden" name="product_id" value="{{ $product->id }}">
-            <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">
-                Agregar al carrito
-            </button>
-        </form>
+    <div class="mt-2">
+        @auth
+            <div class="flex gap-2">
+                <form action="{{ route('cart.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">
+                        Agregar al carrito
+                    </button>
+                </form>
 
-        <form action="{{ route('wishlist.store') }}" method="POST">
-            @csrf
-            <input type="hidden" name="product_id" value="{{ $product->id }}">
-            <button type="submit" class="border px-3 py-1 rounded text-sm">
-                ♡ Wishlist
-            </button>
-        </form>
+                <form action="{{ route('wishlist.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    <button type="submit" class="border px-3 py-1 rounded text-sm">
+                        ♡ Wishlist
+                    </button>
+                </form>
+            </div>
+        @else
+            <div class="space-y-2 text-center border rounded p-3 bg-gray-50">
+                <p class="text-sm text-gray-600">Inicia sesión para agregar productos al carrito.</p>
+                <a href="{{ route('login') }}" class="inline-block bg-blue-600 text-white px-3 py-1 rounded text-sm">
+                    Iniciar sesión
+                </a>
+            </div>
+        @endauth
     </div>
 </div>

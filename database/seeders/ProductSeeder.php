@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Product;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\ProductImage;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -22,6 +23,7 @@ class ProductSeeder extends Seeder
                 'price' => 49.99,
                 'stock' => 25,
                 'brand' => 'sanwa',
+                'image' => 'images/sanwa-red.jpg',
                 'categories' => ['joysticks', 'palancas-arcade'],
             ],
             [
@@ -30,6 +32,7 @@ class ProductSeeder extends Seeder
                 'price' => 3.5,
                 'stock' => 200,
                 'brand' => 'sanwa',
+                'image' => 'images/sanwa-buttons.jpg',
                 'categories' => ['botones'],
             ],
             [
@@ -38,6 +41,7 @@ class ProductSeeder extends Seeder
                 'price' => 45.0,
                 'stock' => 20,
                 'brand' => 'seimitsu',
+                'image' => 'images/gl-lever.jpg',
                 'categories' => ['joysticks'],
             ],
             [
@@ -46,6 +50,7 @@ class ProductSeeder extends Seeder
                 'price' => 199.99,
                 'stock' => 10,
                 'brand' => 'hori',
+                'image' => 'images/victrix-pro-ko.png',
                 'categories' => ['fightpads-y-controladores', 'palancas-arcade'],
             ],
             [
@@ -54,6 +59,7 @@ class ProductSeeder extends Seeder
                 'price' => 59.99,
                 'stock' => 30,
                 'brand' => 'brook',
+                'image' => 'images/haute42-t16.jpg',
                 'categories' => ['pcbs-y-adaptadores'],
             ],
             [
@@ -62,6 +68,7 @@ class ProductSeeder extends Seeder
                 'price' => 74.99,
                 'stock' => 15,
                 'brand' => 'mayflash',
+                'image' => 'images/arcade-stick.jpg',
                 'categories' => ['palancas-arcade'],
             ],
             [
@@ -70,6 +77,7 @@ class ProductSeeder extends Seeder
                 'price' => 12.0,
                 'stock' => 50,
                 'brand' => 'jasen-s-customs',
+                'image' => 'images/pw-leverless.jpg',
                 'categories' => ['accesorios'],
             ],
             [
@@ -78,6 +86,7 @@ class ProductSeeder extends Seeder
                 'price' => 129.99,
                 'stock' => 5,
                 'brand' => 'varmilo',
+                'image' => 'images/user.jpg',
                 'categories' => ['accesorios'],
             ],
         ];
@@ -86,23 +95,25 @@ class ProductSeeder extends Seeder
             $slug = Str::slug($p['name']);
             $brand = Brand::where('slug', $p['brand'])->first();
 
-            $product = Product::firstOrCreate([
-                'slug' => $slug,
-            ], [
-                'name' => $p['name'],
-                'description' => $p['description'],
-                'price' => $p['price'],
-                'stock' => $p['stock'],
-                'image' => null,
-                'active' => true,
-                'brand_id' => $brand ? $brand->id : null,
-            ]);
+            if (! Product::where('slug', $slug)->exists()) {
+                $product = Product::factory()->create([
+                    'name' => $p['name'],
+                    'slug' => $slug,
+                    'description' => $p['description'],
+                    'price' => $p['price'],
+                    'stock' => $p['stock'],
+                    'image' => $p['image'],
+                    'active' => true,
+                    'brand_id' => $brand ? $brand->id : null,
+                ]);
 
-            // Attach categories by slug if they exist
-            $categorySlugs = $p['categories'];
-            $categoryIds = Category::whereIn('slug', $categorySlugs)->pluck('id')->toArray();
-            if (!empty($categoryIds)) {
-                $product->categories()->syncWithoutDetaching($categoryIds);
+                $categoryIds = Category::whereIn('slug', $p['categories'])->pluck('id')->toArray();
+                if (! empty($categoryIds)) {
+                    $product->categories()->syncWithoutDetaching($categoryIds);
+                }
+
+                ProductImage::factory()->state(["product_id" => $product->id, 'path' => $p['image'], 'order' => 0, 'is_primary' => true])->create();
+                ProductImage::factory()->count(2)->state(["product_id" => $product->id, 'is_primary' => false])->create();
             }
         }
     }
