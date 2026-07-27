@@ -28,4 +28,15 @@ class WishlistController extends Controller
 
         return back()->with('success', 'Producto agregado a tu wishlist.');
     }
+
+    public function destroy(Request $request)
+    {
+        $request->validate([
+            'product_id' => ['required', 'exists:products,id'],
+        ]);
+
+        auth()->user()->wishlist()->detach($request->product_id);
+
+        return back()->with('success', 'Producto removido de tu wishlist.');
+    }
 }

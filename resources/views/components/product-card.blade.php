@@ -15,6 +15,7 @@
         @auth
             @php
                 $inCart = auth()->check() && auth()->user()->cart?->items()->where('product_id', $product->id)->exists();
+                $inWishlist = auth()->check() && auth()->user()->wishlist()->where('products.id', $product->id)->exists();
             @endphp
 
             <div class="flex gap-2">
@@ -37,13 +38,24 @@
                     </form>
                 @endif
 
-                <form action="{{ route('wishlist.store') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                    <button type="submit" class="border px-3 py-1 rounded text-sm">
-                        ♡ Wishlist
-                    </button>
-                </form>
+                @if ($inWishlist)
+                    <form action="{{ route('wishlist.destroy') }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <button type="submit" class="bg-pink-600 text-white px-3 py-1 rounded text-sm">
+                            ❤ Wishlist
+                        </button>
+                    </form>
+                @else
+                    <form action="{{ route('wishlist.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <button type="submit" class="border px-3 py-1 rounded text-sm">
+                            ♡ Wishlist
+                        </button>
+                    </form>
+                @endif
             </div>
         @else
             <div class="space-y-2 text-center border rounded p-3 bg-gray-50">
