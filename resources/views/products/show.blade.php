@@ -12,7 +12,7 @@
                 @endphp
 
                 @if ($mainImage)
-                    <img src="{{ $mainImage->url }}" alt="{{ $product->name }}" class="w-full h-[420px] object-cover rounded-xl border">
+                    <img id="main-product-image" src="{{ $mainImage->url }}" alt="{{ $product->name }}" class="w-full h-[420px] object-cover rounded-xl border">
                 @else
                     <div class="w-full h-[420px] flex items-center justify-center rounded-xl border bg-gray-100 text-gray-500">
                         Sin imagen disponible
@@ -22,7 +22,12 @@
                 @if ($images->count() > 1)
                     <div class="mt-4 grid grid-cols-4 gap-3">
                         @foreach ($images as $image)
-                            <img src="{{ $image->url }}" alt="{{ $product->name }}" class="h-24 w-full object-cover rounded border">
+                            <img
+                                src="{{ $image->url }}"
+                                alt="{{ $product->name }}"
+                                class="thumbnail-image h-24 w-full object-cover rounded border cursor-pointer"
+                                data-image="{{ $image->url }}"
+                            >
                         @endforeach
                     </div>
                 @endif
@@ -94,4 +99,17 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.thumbnail-image').forEach(function (thumb) {
+                thumb.addEventListener('click', function () {
+                    const mainImage = document.getElementById('main-product-image');
+                    if (mainImage) {
+                        mainImage.src = this.dataset.image;
+                    }
+                });
+            });
+        });
+    </script>
 @endsection
