@@ -24,6 +24,13 @@ class Product extends Model
         );
     }
 
+    protected function stockStatus(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->stock > 0 ? 'En stock' : 'Sin stock',
+        );
+    }
+
     public function categories(){
         return $this->belongsToMany(Category::class);
     }

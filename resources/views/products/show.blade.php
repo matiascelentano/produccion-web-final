@@ -40,6 +40,13 @@
                 <h1 class="text-3xl font-bold mt-2">{{ $product->name }}</h1>
                 <p class="text-2xl font-semibold text-gray-900 mt-4">{{ $product->price_formatted }}</p>
 
+                <div class="mt-3 flex items-center gap-2">
+                    <span class="text-sm font-medium {{ $product->stock > 0 ? 'text-green-600' : 'text-red-600' }}">
+                        {{ $product->stock > 0 ? 'En stock' : 'Sin stock' }}
+                    </span>
+                    <span class="text-sm text-gray-500">({{ $product->stock }} disponibles)</span>
+                </div>
+
                 <div class="mt-6 flex gap-3">
                     @auth
                         @php
