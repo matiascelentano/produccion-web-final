@@ -7,6 +7,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\OrderController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -31,6 +32,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/wishlist', [WishlistController::class, 'store'])->name('wishlist.store');
     Route::delete('/wishlist', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
+
+    
+    Route::get('/mis-pedidos', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/mis-pedidos/{order}', [OrderController::class, 'show'])->name('orders.show');
+
+    Route::post('/productos/{product}/comprar', [OrderController::class, 'storeSingle'])->name('orders.storeSingle');
+    
+    Route::post('/checkout', [OrderController::class, 'storeFromCart'])->name('orders.storeFromCart');
 
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });

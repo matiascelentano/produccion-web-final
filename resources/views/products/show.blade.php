@@ -49,6 +49,14 @@
 
                 <div class="mt-6 flex gap-3">
                     @auth
+                        <form action="{{ route('orders.storeSingle', $product) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">
+                                Comprar ahora
+                            </button>
+                        </form>
+
                         @php
                             $inCart = auth()->user()->cart?->items()->where('product_id', $product->id)->exists();
                             $inWishlist = auth()->user()->wishlist()->where('products.id', $product->id)->exists();
