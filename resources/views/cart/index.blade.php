@@ -23,5 +23,17 @@
                 @endforeach
             </div>
         @endif
+        @if (!blank($cart) && $cart->items->isNotEmpty())
+            <div class="mt-6 border-t pt-4 flex justify-between items-center">
+                <p class="text-xl font-semibold">Total: {{ '$' . number_format($cart->total, 2, ',', '.') }}</p>
+
+                <form action="{{ route('orders.storeFromCart') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded">
+                        Finalizar compra
+                    </button>
+                </form>
+            </div>
+        @endif
     </div>
 @endsection
