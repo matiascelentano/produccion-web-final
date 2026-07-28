@@ -22,8 +22,9 @@
         <nav class="flex items-center gap-4 shrink-0">
             <a href="{{ route('products.index') }}">Catálogo</a>
 
+            {{-- resources/views/components/header.blade.php --}}
+
             @auth
-                {{-- Solo si el usuario logueado es admin --}}
                 @if (auth()->user()->isAdmin())
                     <a href="{{ route('admin.dashboard') }}" class="font-semibold text-blue-600">
                         Panel Admin
@@ -31,8 +32,6 @@
                 @endif
 
                 <a href="{{ route('wishlist.index') }}">Wishlist</a>
-
-                <a href="{{ route('orders.index') }}">Mis pedidos</a>
 
                 <a href="{{ route('cart.index') }}" class="relative">
                     Carrito
@@ -43,19 +42,16 @@
                     @endif
                 </a>
 
-                {{--<a href="{{ route('orders.index') }}">Mis pedidos</a>
+                <a href="{{ route('orders.index') }}">Mis pedidos</a>
 
-                <div class="relative group">
-                    <button>{{ auth()->user()->name }}</button>
-                    <div class="absolute right-0 hidden group-hover:block bg-white border rounded shadow-md">
-                        <a href="{{ route('profile.edit') }}" class="block px-4 py-2">Mi perfil</a>
-                        <form action="{{ route('logout') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="block w-full text-left px-4 py-2">Cerrar sesión</button>
-                        </form>
-                    </div>
-                </div>
-                --}}
+                <span class="text-gray-600">{{ auth()->user()->name }}</span>
+
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="border px-3 py-1 rounded hover:bg-gray-100">
+                        Cerrar sesión
+                    </button>
+                </form>
             @else
                 <a href="{{ route('login') }}">Iniciar sesión</a>
                 <a href="{{ route('register') }}" class="bg-blue-600 text-white px-3 py-1 rounded">
