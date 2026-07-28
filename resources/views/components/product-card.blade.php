@@ -12,7 +12,16 @@
     </a>
 
     <div class="mt-2">
-        @auth
+        @guest
+            <div class="flex gap-2">
+                <a href="{{ route('login') }}" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">
+                    Agregar al carrito
+                </a>
+                <a href="{{ route('login') }}" class="border px-3 py-1 rounded text-sm">
+                    ♡ Wishlist
+                </a>
+            </div>
+        @else
             @php
                 $inCart = auth()->check() && auth()->user()->cart?->items()->where('product_id', $product->id)->exists();
                 $inWishlist = auth()->check() && auth()->user()->wishlist()->where('products.id', $product->id)->exists();
@@ -57,13 +66,6 @@
                     </form>
                 @endif
             </div>
-        @else
-            <div class="space-y-2 text-center border rounded p-3 bg-gray-50">
-                <p class="text-sm text-gray-600">Inicia sesión para agregar productos al carrito.</p>
-                <a href="{{ route('login') }}" class="inline-block bg-blue-600 text-white px-3 py-1 rounded text-sm">
-                    Iniciar sesión
-                </a>
-            </div>
-        @endauth
+        @endguest
     </div>
 </div>

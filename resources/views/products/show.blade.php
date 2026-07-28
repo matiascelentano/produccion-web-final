@@ -47,8 +47,18 @@
                     <span class="text-sm text-gray-500">({{ $product->stock }} disponibles)</span>
                 </div>
 
-                <div class="mt-6 flex gap-3">
-                    @auth
+                <div class="mt-6 flex gap-3 flex-wrap">
+                    @guest
+                        <a href="{{ route('login') }}" class="bg-green-600 text-white px-4 py-2 rounded">
+                            Comprar ahora
+                        </a>
+                        <a href="{{ route('login') }}" class="bg-blue-600 text-white px-4 py-2 rounded">
+                            Agregar al carrito
+                        </a>
+                        <a href="{{ route('login') }}" class="border px-4 py-2 rounded">
+                            ♡ Wishlist
+                        </a>
+                    @else
                         <form action="{{ route('orders.storeSingle', $product) }}" method="POST">
                             @csrf
                             <input type="hidden" name="quantity" value="1">
@@ -91,9 +101,7 @@
                                 <button type="submit" class="border px-4 py-2 rounded">♡ Wishlist</button>
                             </form>
                         @endif
-                    @else
-                        <a href="{{ route('login') }}" class="bg-blue-600 text-white px-4 py-2 rounded">Iniciar sesión</a>
-                    @endauth
+                    @endguest
                 </div>
 
                 <div class="mt-8 border-t pt-6">
