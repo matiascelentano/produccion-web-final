@@ -7,6 +7,7 @@ use App\Http\Requests\PurchaseRequest;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -37,14 +38,20 @@ class OrderController extends Controller
     public function storeSingle(PurchaseRequest $request, Product $product)
     {
         $quantity = $request->quantity;
+        $address = auth()->user()->addresses()->where('is_default', true)->first();
+
+        if (!$address) {
+            return back()->withErrors(['address' => 'Agrega y selecciona una dirección antes de comprar.']);
+        }
 
         if ($product->stock < $quantity) {
             return back()->withErrors(['stock' => 'No hay stock suficiente para ese producto.']);
         }
 
-        $order = DB::transaction(function () use ($product, $quantity) {
+        $order = DB::transaction(function () use ($product, $quantity, $address) {
             $order = Order::create([
                 'user_id' => auth()->id(),
+                'address_id' => $address->id,
                 'status' => OrderStatus::Pendiente,
                 'total' => $product->price * $quantity,
             ]);
@@ -64,12 +71,24 @@ class OrderController extends Controller
     }
 
     // Compra de TODO el carrito ("Finalizar compra")
-    public function storeFromCart()
+    public function storeFromCart(Request $request)
     {
+        $request->validate([
+            'address_id' => ['nullable', 'exists:addresses,id'],
+        ]);
+
         $cart = auth()->user()->cart()->with('items.product')->first();
 
         if (blank($cart) || $cart->items->isEmpty()) {
             return back()->withErrors(['cart' => 'Tu carrito está vacío.']);
+        }
+
+        $address = $request->filled('address_id')
+            ? auth()->user()->addresses()->find($request->address_id)
+            : auth()->user()->addresses()->where('is_default', true)->first();
+
+        if (!$address) {
+            return back()->withErrors(['address' => 'Agrega y selecciona una dirección antes de comprar.']);
         }
 
         // Verificar stock de todos los items ANTES de crear nada
@@ -81,9 +100,10 @@ class OrderController extends Controller
             }
         }
 
-        $order = DB::transaction(function () use ($cart) {
+        $order = DB::transaction(function () use ($cart, $address) {
             $order = Order::create([
                 'user_id' => auth()->id(),
+                'address_id' => $address->id,
                 'status' => OrderStatus::Pendiente,
                 'total' => 0,
             ]);

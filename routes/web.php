@@ -8,6 +8,7 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\AddressController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -36,6 +37,10 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/mis-pedidos', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/mis-pedidos/{order}', [OrderController::class, 'show'])->name('orders.show');
+
+    Route::get('/mis-direcciones', [AddressController::class, 'index'])->name('addresses.index');
+    Route::post('/mis-direcciones', [AddressController::class, 'store'])->name('addresses.store');
+    Route::put('/mis-direcciones/{address}', [AddressController::class, 'update'])->name('addresses.update');
 
     Route::post('/productos/{product}/comprar', [OrderController::class, 'storeSingle'])->name('orders.storeSingle');
     
