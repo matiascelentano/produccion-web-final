@@ -59,13 +59,9 @@
                             ♡ Wishlist
                         </a>
                     @else
-                        <form action="{{ route('orders.storeSingle', $product) }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="quantity" value="1">
-                            <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">
-                                Comprar ahora
-                            </button>
-                        </form>
+                        <a href="{{ route('orders.checkoutSingle', $product) }}" class="bg-green-600 text-white px-4 py-2 rounded inline-block">
+                            Comprar ahora
+                        </a>
 
                         @php
                             $inCart = auth()->user()->cart?->items()->where('product_id', $product->id)->exists();

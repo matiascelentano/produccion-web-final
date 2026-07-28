@@ -42,8 +42,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/mis-direcciones', [AddressController::class, 'store'])->name('addresses.store');
     Route::put('/mis-direcciones/{address}', [AddressController::class, 'update'])->name('addresses.update');
 
+    Route::get('/productos/{product}/checkout', [OrderController::class, 'checkoutSingle'])->name('orders.checkoutSingle');
     Route::post('/productos/{product}/comprar', [OrderController::class, 'storeSingle'])->name('orders.storeSingle');
-    
+
+    Route::get('/checkout', [OrderController::class, 'checkoutCart'])->name('orders.checkoutCart');
     Route::post('/checkout', [OrderController::class, 'storeFromCart'])->name('orders.storeFromCart');
 
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');

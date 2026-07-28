@@ -60,21 +60,9 @@
                             @endif
                         </div>
 
-                        <form action="{{ route('orders.storeFromCart') }}" method="POST" class="space-y-3">
-                            @csrf
-                            <label class="block text-sm font-medium">Seleccionar otra dirección</label>
-                            <select name="address_id" class="w-full border rounded p-2">
-                                @foreach (auth()->user()->addresses()->orderByDesc('is_default')->get() as $address)
-                                    <option value="{{ $address->id }}" {{ $address->is_default ? 'selected' : '' }}>
-                                        {{ $address->street }} - {{ $address->city }} {{ $address->is_default ? '(Activa)' : '' }}
-                                    </option>
-                                @endforeach
-                            </select>
-
-                            <button type="submit" class="w-full bg-green-600 text-white px-6 py-2 rounded font-medium">
-                                Finalizar compra
-                            </button>
-                        </form>
+                        <a href="{{ route('orders.checkoutCart') }}" class="w-full bg-green-600 text-white px-6 py-2 rounded font-medium inline-block text-center">
+                            Finalizar compra
+                        </a>
                     </div>
 
                     <div class="border rounded-xl p-4 bg-white shadow-sm">

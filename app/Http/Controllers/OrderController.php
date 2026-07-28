@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
@@ -34,11 +35,58 @@ class OrderController extends Controller
         return view('orders.show', compact('order'));
     }
 
+    public function checkoutSingle(Product $product)
+    {
+        $addresses = auth()->user()->addresses()->orderByDesc('is_default')->get();
+        $quantity = 1;
+        $total = $product->price * $quantity;
+
+        return view('checkout.index', [
+            'mode' => 'single',
+            'product' => $product,
+            'quantity' => $quantity,
+            'total' => $total,
+            'addresses' => $addresses,
+            'cart' => null,
+            'submitRoute' => route('orders.storeSingle', $product),
+        ]);
+    }
+
+    public function checkoutCart()
+    {
+        $cart = auth()->user()->cart()->with('items.product')->first();
+
+        if (blank($cart) || $cart->items->isEmpty()) {
+            return redirect()->route('cart.index')->withErrors(['cart' => 'Tu carrito está vacío.']);
+        }
+
+        $addresses = auth()->user()->addresses()->orderByDesc('is_default')->get();
+        $total = $cart->items->sum(fn ($item) => $item->quantity * $item->product->price);
+
+        return view('checkout.index', [
+            'mode' => 'cart',
+            'product' => null,
+            'quantity' => null,
+            'total' => $total,
+            'addresses' => $addresses,
+            'cart' => $cart,
+            'submitRoute' => route('orders.storeFromCart'),
+        ]);
+    }
+
     // Compra directa de UN producto ("Comprar ahora")
     public function storeSingle(PurchaseRequest $request, Product $product)
     {
+        $request->validate([
+            'quantity' => ['required', 'integer', 'min:1'],
+            'customer_name' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'string', 'max:30'],
+            'address_id' => ['required', 'exists:addresses,id'],
+            'notes' => ['nullable', 'string', 'max:1000'],
+        ]);
+
         $quantity = $request->quantity;
-        $address = auth()->user()->addresses()->where('is_default', true)->first();
+        $address = auth()->user()->addresses()->find($request->address_id);
 
         if (!$address) {
             return back()->withErrors(['address' => 'Agrega y selecciona una dirección antes de comprar.']);
@@ -48,7 +96,7 @@ class OrderController extends Controller
             return back()->withErrors(['stock' => 'No hay stock suficiente para ese producto.']);
         }
 
-        $order = DB::transaction(function () use ($product, $quantity, $address) {
+        $order = DB::transaction(function () use ($product, $quantity, $address, $request) {
             $order = Order::create([
                 'user_id' => auth()->id(),
                 'address_id' => $address->id,
@@ -74,7 +122,10 @@ class OrderController extends Controller
     public function storeFromCart(Request $request)
     {
         $request->validate([
-            'address_id' => ['nullable', 'exists:addresses,id'],
+            'customer_name' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'string', 'max:30'],
+            'address_id' => ['required', 'exists:addresses,id'],
+            'notes' => ['nullable', 'string', 'max:1000'],
         ]);
 
         $cart = auth()->user()->cart()->with('items.product')->first();
@@ -83,9 +134,7 @@ class OrderController extends Controller
             return back()->withErrors(['cart' => 'Tu carrito está vacío.']);
         }
 
-        $address = $request->filled('address_id')
-            ? auth()->user()->addresses()->find($request->address_id)
-            : auth()->user()->addresses()->where('is_default', true)->first();
+        $address = auth()->user()->addresses()->find($request->address_id);
 
         if (!$address) {
             return back()->withErrors(['address' => 'Agrega y selecciona una dirección antes de comprar.']);

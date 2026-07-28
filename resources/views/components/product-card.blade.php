@@ -13,7 +13,10 @@
 
     <div class="mt-2">
         @guest
-            <div class="flex gap-2">
+            <div class="flex flex-wrap gap-2">
+                <a href="{{ route('login') }}" class="bg-green-600 text-white px-3 py-1 rounded text-sm">
+                    Comprar
+                </a>
                 <a href="{{ route('login') }}" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">
                     Agregar al carrito
                 </a>
@@ -27,7 +30,11 @@
                 $inWishlist = auth()->check() && auth()->user()->wishlist()->where('products.id', $product->id)->exists();
             @endphp
 
-            <div class="flex gap-2">
+            <div class="flex flex-wrap gap-2">
+                <a href="{{ route('orders.checkoutSingle', $product) }}" class="bg-green-600 text-white px-3 py-1 rounded text-sm">
+                    Comprar
+                </a>
+
                 @if ($inCart)
                     <form action="{{ route('cart.destroy') }}" method="POST">
                         @csrf
