@@ -32,6 +32,8 @@
 
                 <a href="{{ route('wishlist.index') }}">Wishlist</a>
 
+                <a href="{{ route('orders.index') }}">Mis pedidos</a>
+
                 <a href="{{ route('cart.index') }}" class="relative">
                     Carrito
                     @if ($cartCount > 0)
