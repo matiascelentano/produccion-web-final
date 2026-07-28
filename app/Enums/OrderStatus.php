@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Enums;
 
 enum OrderStatus: string
 {
@@ -9,6 +9,17 @@ enum OrderStatus: string
     case Enviado = 'enviado';
     case Entregado = 'entregado';
     case Cancelado = 'cancelado';
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::Pendiente => 'Pendiente',
+            self::Pagado => 'Pagado',
+            self::Enviado => 'Enviado',
+            self::Entregado => 'Entregado',
+            self::Cancelado => 'Cancelado',
+        };
+    }
 
     // Acá va la lógica de negocio de transiciones válidas
     public function puedeCambiarA(OrderStatus $nuevo): bool

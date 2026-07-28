@@ -24,7 +24,9 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        $this->authorize('view', $order); // requiere la OrderPolicy
+        if (auth()->id() !== $order->user_id) {
+            abort(403, 'No tienes permiso para ver esta orden.');
+        }
 
         $order->load('items.product');
 
