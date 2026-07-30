@@ -12,7 +12,9 @@
                 @endphp
 
                 @if ($mainImage)
-                    <img id="product-main-image" src="{{ $mainImage->url }}" alt="{{ $product->name }}" class="w-full h-[420px] object-cover rounded-xl border">
+                    <div class="w-full h-[420px] rounded-xl border bg-white flex items-center justify-center overflow-hidden">
+                        <img id="product-main-image" src="{{ $mainImage->url }}" alt="{{ $product->name }}" class="max-w-full max-h-full object-contain">
+                    </div>
                 @else
                     <div class="w-full h-[420px] flex items-center justify-center rounded-xl border bg-gray-100 text-gray-500">
                         Sin imagen disponible
@@ -22,12 +24,14 @@
                 @if ($images->count() > 1)
                     <div class="mt-4 grid grid-cols-4 gap-3">
                         @foreach ($images as $image)
-                            <img
-                                src="{{ $image->url }}"
-                                alt="{{ $product->name }}"
-                                class="thumbnail-image h-24 w-full object-cover rounded border cursor-pointer hover:opacity-80"
-                                data-image="{{ $image->url }}"
-                            >
+                            <div class="h-24 w-full rounded border bg-white flex items-center justify-center overflow-hidden cursor-pointer hover:opacity-80 thumbnail-wrapper">
+                                <img
+                                    src="{{ $image->url }}"
+                                    alt="{{ $product->name }}"
+                                    class="thumbnail-image max-w-full max-h-full object-contain"
+                                    data-image="{{ $image->url }}"
+                                >
+                            </div>
                         @endforeach
                     </div>
                 @endif
@@ -121,11 +125,12 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.thumbnail-image').forEach(function (thumb) {
-                thumb.addEventListener('click', function () {
+            document.querySelectorAll('.thumbnail-wrapper').forEach(function (wrapper) {
+                wrapper.addEventListener('click', function () {
+                    const thumb = this.querySelector('.thumbnail-image');
                     const mainImage = document.getElementById('product-main-image');
-                    if (mainImage) {
-                        mainImage.src = this.dataset.image;
+                    if (mainImage && thumb) {
+                        mainImage.src = thumb.dataset.image;
                     }
                 });
             });

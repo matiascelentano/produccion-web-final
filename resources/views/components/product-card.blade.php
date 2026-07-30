@@ -1,22 +1,21 @@
 {{-- resources/views/components/product-card.blade.php --}}
 <div class="bg-brand-card rounded-lg p-4 transition hover:shadow-[0_0_12px_rgba(111,85,206,0.5)] max-w-xl">
     <a href="{{ route('products.show', $product) }}">
-        <img
-            src="{{ $product->primaryImage?->url ?? asset('images/product-placeholder.png') }}"
-            alt="{{ $product->name }}"
-            class="w-full h-48 object-cover rounded"
-        >
+        <div class="w-full h-48 rounded bg-white flex items-center justify-center overflow-hidden">
+            <img
+                src="{{ $product->primaryImage?->url ?? asset('images/product-placeholder.png') }}"
+                alt="{{ $product->name }}"
+                class="max-w-full max-h-full object-contain"
+            >
+        </div>
         <h3 class="mt-2 font-sans text-lg text-black truncate">{{ $product->name }}</h3>
         <p class="text-black/70 font-sans text-base font-medium">{{ $product->price_formatted }}</p>
     </a>
-
     <div class="mt-2 flex gap-2">
         @guest
             <a href="{{ route('login') }}" aria-label="Comprar" title="Comprar"
-               class="p-2.5 rounded-full bg-green-600 text-white transition hover:bg-green-700">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+               class="p-2.5 bg-green-600 text-white transition hover:bg-green-700 rounded-md">
+                <p>Comprar</p>
             </a>
 
             <a href="{{ route('login') }}" aria-label="Agregar al carrito" title="Agregar al carrito"
@@ -41,7 +40,7 @@
             @endphp
 
             <a href="{{ route('orders.checkoutSingle', $product) }}" aria-label="Comprar" title="Comprar"
-               class="p-2.5 bg-green-600 text-white transition hover:bg-green-700">
+               class="p-2.5 bg-green-600 text-white transition hover:bg-green-700 rounded-md">
                 <p>Comprar</p>
             </a>
 
