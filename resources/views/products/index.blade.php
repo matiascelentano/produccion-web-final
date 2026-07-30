@@ -7,14 +7,14 @@
 
         <div
             id="mobile-filters-overlay"
-            class="fixed inset-0 z-40 hidden bg-black/50 md:hidden"
+            class="fixed inset-0 z-40 hidden bg-black/50 lg:hidden"
             onclick="toggleMobileFilters()"
         ></div>
 
-        <div
-            id="mobile-filters-panel"
-            class="fixed inset-x-0 bottom-0 z-50 max-h-[80vh] translate-y-full overflow-y-auto rounded-t-2xl border border-gray-200 bg-white p-4 shadow-2xl transition-transform duration-300 ease-out md:hidden"
-        >
+            <div
+                id="mobile-filters-panel"
+                class="fixed inset-x-0 bottom-0 z-50 max-h-[80vh] translate-y-full overflow-y-auto rounded-t-2xl border border-gray-200 bg-white p-4 shadow-2xl transition-transform duration-300 ease-out lg:hidden"
+            >
             <div class="mb-3 flex items-center justify-between">
                 <h3 class="text-lg font-semibold">Filtros</h3>
                 <button type="button" onclick="toggleMobileFilters()" class="rounded-full p-1 text-gray-500 hover:bg-gray-100">
@@ -57,7 +57,7 @@
             </form>
         </div>
 
-        <aside class="hidden md:block w-64 shrink-0">
+        <aside class="hidden lg:block w-64 shrink-0">
             <form method="GET" action="{{ route('products.index') }}" class="space-y-4">
                 <input type="hidden" name="search" value="{{ request('search') }}">
                 <input type="hidden" name="sort" value="{{ request('sort') }}">
@@ -97,7 +97,7 @@
                 <p class="text-sm text-gray-600">{{ $products->total() }} productos encontrados</p>
 
                 <div class="flex items-center gap-2">
-                    <button type="button" id="mobile-filters-toggle" class="inline-flex w-auto items-center justify-between rounded-lg border border-indigo-600 bg-indigo-600 text-sm font-semibold text-white shadow-sm p-2 m-0 md:hidden"
+                    <button type="button" id="mobile-filters-toggle" class="inline-flex w-auto items-center justify-between rounded-lg border border-indigo-600 bg-indigo-600 text-sm font-semibold text-white shadow-sm p-2 m-0 lg:hidden"
                         onclick="toggleMobileFilters()" aria-expanded="false">
                         <span>Filtros</span>
                         <span class="text-base">☰</span>
@@ -116,7 +116,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4 xl:gap-6">
                 @foreach ($products as $product)
                     <x-product-card :product="$product" />
                 @endforeach

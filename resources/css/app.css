@@ -24,12 +24,39 @@
     --color-brand-accent: #6F55CE;
     --color-brand-card: #e2e2e2;
 }
+@layer base {
+    body {
+        font-size: 16px;
+    }
+
+    h1 {
+        @apply text-2xl lg:text-3xl font-semibold;
+    }
+    h2 {
+        @apply text-xl lg:text-2xl font-semibold;
+    }
+    h3 {
+        @apply text-lg font-semibold;
+    }
+
+    label {
+        @apply text-base font-medium;
+    }
+
+    table {
+        @apply text-base;
+    }
+}
+
 @layer components {
     .btn-primary {
         @apply bg-brand-dark text-white px-4 py-2 rounded transition hover:text-brand-accent hover:bg-black;
     }
     .btn-secondary {
         @apply bg-brand-accent text-black px-4 py-2 rounded transition hover:text-white;
+    }
+    .text-meta {
+        @apply text-sm text-gray-600;
     }
 }
 

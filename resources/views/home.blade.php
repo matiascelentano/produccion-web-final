@@ -29,7 +29,7 @@
     <section class="p-6">
         <h2 class="text-2xl font-bold mb-4">Productos destacados</h2>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4 xl:gap-6">
             @foreach ($featuredProducts as $product)
                 <x-product-card :product="$product" />
             @endforeach

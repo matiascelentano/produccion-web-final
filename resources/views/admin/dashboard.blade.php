@@ -13,19 +13,19 @@
 
         <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
             <div class="border rounded-xl p-4 bg-white shadow-sm">
-                <p class="text-sm text-gray-500">Productos</p>
+                <p class="text-base text-gray-600">Productos</p>
                 <p class="text-2xl font-semibold">{{ $stats['products'] }}</p>
             </div>
             <div class="border rounded-xl p-4 bg-white shadow-sm">
-                <p class="text-sm text-gray-500">Pedidos</p>
+                <p class="text-base text-gray-600">Pedidos</p>
                 <p class="text-2xl font-semibold">{{ $stats['orders'] }}</p>
             </div>
             <div class="border rounded-xl p-4 bg-white shadow-sm">
-                <p class="text-sm text-gray-500">Usuarios</p>
+                <p class="text-base text-gray-600">Usuarios</p>
                 <p class="text-2xl font-semibold">{{ $stats['users'] }}</p>
             </div>
             <div class="border rounded-xl p-4 bg-white shadow-sm">
-                <p class="text-sm text-gray-500">Pedidos pendientes</p>
+                <p class="text-base text-gray-600">Pedidos pendientes</p>
                 <p class="text-2xl font-semibold">{{ $stats['pending_orders'] }}</p>
             </div>
         </div>

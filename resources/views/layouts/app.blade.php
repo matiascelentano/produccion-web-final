@@ -1,3 +1,4 @@
+{{-- resources/views/layouts/app.blade.php --}}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -15,11 +16,10 @@
 <body class="bg-brand-dark text-white min-h-screen">
     <x-header />
 
-    <main>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         @yield('content')
     </main>
 
     <x-footer />
 </body>
-</html>
 </html>
