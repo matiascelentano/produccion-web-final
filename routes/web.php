@@ -10,6 +10,11 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\BrandController as AdminBrandController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -52,6 +57,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
 
-Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::resource('products', AdminProductController::class)->except(['show']);
+    Route::delete('product-images/{image}', [AdminProductController::class, 'destroyImage'])->name('product-images.destroy');
+
+    Route::resource('categories', AdminCategoryController::class)->except(['show']);
+    Route::resource('brands', AdminBrandController::class)->except(['show']);
+
+    Route::resource('orders', AdminOrderController::class)->only(['index', 'show', 'update']);
 });

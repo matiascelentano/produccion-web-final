@@ -11,15 +11,11 @@ class DashboardController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth']);
+
     }
 
     public function index()
     {
-        if (!auth()->user()?->isAdmin()) {
-            abort(403, 'No tienes permiso para acceder al panel de administración.');
-        }
-
         $stats = [
             'products' => Product::count(),
             'orders' => Order::count(),

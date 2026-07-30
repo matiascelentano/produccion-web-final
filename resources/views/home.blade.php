@@ -5,7 +5,6 @@
 
 @section('content')
 
-    {{-- Banner promocional --}}
     <section class="w-full">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-6">
             <img src="{{ asset('images/promo-banner-1.jpg') }}" alt="Promoción" class="rounded-lg w-full object-cover">
@@ -13,7 +12,6 @@
         </div>
     </section>
 
-    {{-- Categorías --}}
     <section class="p-6">
         <h2 class="text-2xl font-bold mb-4">Explorá por categoría</h2>
 
@@ -28,7 +26,6 @@
         </div>
     </section>
 
-    {{-- Productos destacados --}}
     <section class="p-6">
         <h2 class="text-2xl font-bold mb-4">Productos destacados</h2>
 

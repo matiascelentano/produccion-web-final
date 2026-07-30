@@ -1,11 +1,9 @@
-{{-- resources/views/components/header.blade.php --}}
+
 <header class="sticky top-0 z-10">
 
-    {{-- Barra superior: violeta, con logo + buscador + iconos/nav --}}
     <div class="bg-brand-accent px-4 py-3">
         <div class="max-w-7xl mx-auto flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
 
-            {{-- Logo + buscador + iconos mobile: van juntos en la misma fila, incluso en mobile --}}
             <div class="flex items-center gap-3 lg:contents">
                 <a href="{{ route('home') }}" class="font-pixel text-2xl lg:text-3xl text-black shrink-0">
                     Mi Tienda
@@ -17,14 +15,13 @@
                         name="search"
                         placeholder="Buscar productos..."
                         value="{{ request('search') }}"
-                        class="w-full rounded-full px-4 py-2 text-base bg-black/20 text-black placeholder-black/60 focus:outline-none focus:ring-2 focus:ring-black/40"
+                        class="w-full rounded-full px-4 py-2 text-base bg-white/90 text-brand-dark placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-brand-dark"
                     >
                 </form>
-
-                {{-- Iconos de mobile: solo visibles debajo de lg --}}
+                
                 <div class="flex items-center gap-2 lg:hidden shrink-0">
                     @auth
-                        <a href="{{ route('cart.index') }}" class="relative p-2.5 border border-black/30 rounded-full text-black">
+                        <a href="{{ route('cart.index') }}" class="relative p-2.5 border border-white/40 rounded-full text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -37,7 +34,7 @@
                         </a>
 
                         <details class="relative">
-                            <summary class="list-none p-2.5 border border-black/30 rounded-full cursor-pointer flex items-center justify-center text-black">
+                            <summary class="list-none p-2.5 border border-white/40 rounded-full cursor-pointer flex items-center justify-center text-white">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                                 </svg>
@@ -90,8 +87,7 @@
                 </div>
             </div>
 
-            {{-- Nav desktop: igual lógica que siempre, solo visible a partir de lg --}}
-            <nav class="hidden lg:flex items-center gap-4 shrink-0 flex-wrap text-black text-lg">
+            <nav class="hidden lg:flex items-center gap-4 shrink-0 flex-wrap text-white text-lg">
                 @auth
                     @if (auth()->user()->isAdmin())
                         <a href="{{ route('admin.dashboard') }}" class="font-semibold text-brand-dark hover:text-white transition">
@@ -150,7 +146,7 @@
                 </summary>
                 <div class="absolute left-0 top-full mt-1 w-56 rounded-md bg-brand-panel border border-white/10 p-2 shadow-lg z-20 text-base">
                     @forelse ($categories as $category)
-                        <a href="{{ route('products.index', ['category' => $category->slug]) }}" class="block rounded px-3 py-3 hover:bg-black/30 hover:text-brand-accent transition">
+                        <a href="{{ route('products.index', ['category' => $category->slug]) }}" class="block rounded px-3 py-3 hover:bg-black/30 hover:text-white transition">
                             {{ $category->name }}
                         </a>
                     @empty
@@ -168,7 +164,7 @@
                 </summary>
                 <div class="absolute left-0 top-full mt-1 w-56 rounded-md bg-brand-panel border border-white/10 p-2 shadow-lg z-20 text-base">
                     @forelse ($brands as $brand)
-                        <a href="{{ route('products.index', ['brand' => $brand->slug]) }}" class="block rounded px-3 py-3 hover:bg-black/30 hover:text-brand-accent transition">
+                        <a href="{{ route('products.index', ['brand' => $brand->slug]) }}" class="block rounded px-3 py-3 hover:bg-black/30 hover:text-white transition">
                             {{ $brand->name }}
                         </a>
                     @empty

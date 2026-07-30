@@ -5,7 +5,6 @@
 @section('content')
     <div class="flex flex-col gap-3 p-2 sm:p-3 md:flex-row md:gap-6 md:p-6">
 
-        {{-- Overlay + panel deslizable desde abajo (mobile) --}}
         <div
             id="mobile-filters-overlay"
             class="fixed inset-0 z-40 hidden bg-black/50 md:hidden"
@@ -58,7 +57,6 @@
             </form>
         </div>
 
-        {{-- Sidebar de filtros (desktop) --}}
         <aside class="hidden md:block w-64 shrink-0">
             <form method="GET" action="{{ route('products.index') }}" class="space-y-4">
                 <input type="hidden" name="search" value="{{ request('search') }}">
