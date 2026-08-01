@@ -21,7 +21,7 @@
                 @csrf
                 <input type="hidden" name="quantity" value="{{ $quantity ?? 1 }}">
 
-                <div class="border rounded-xl p-4 bg-white">
+                <div class="border rounded-xl p-4 bg-white text-gray-800">
                     <h2 class="text-lg font-semibold mb-4">Datos de contacto</h2>
                     <div class="grid md:grid-cols-2 gap-4">
                         <div>
@@ -39,7 +39,7 @@
                     </div>
                 </div>
 
-                <div class="border rounded-xl p-4 bg-white">
+                <div class="border rounded-xl p-4 bg-white text-gray-800">
                     <div class="flex items-center justify-between mb-3">
                         <h2 class="text-lg font-semibold">Dirección de envío</h2>
                         <a href="{{ route('addresses.index') }}" class="text-sm text-blue-600 hover:underline">Gestionar direcciones</a>
@@ -67,7 +67,7 @@
                 </button>
             </form>
 
-            <div class="border rounded-xl p-4 bg-gray-50 h-fit">
+            <div class="border rounded-xl p-4 bg-gray-50 h-fit text-gray-800">
                 <h2 class="text-lg font-semibold mb-3">Resumen</h2>
                 @if ($mode === 'single')
                     <div class="flex justify-between text-sm text-gray-600">

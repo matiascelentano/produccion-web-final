@@ -8,8 +8,8 @@
             <p class="bg-green-100 text-green-700 p-3 rounded mb-4">{{ session('success') }}</p>
         @endif
 
-        <h1 class="text-2xl font-semibold mb-2">Pedido #{{ $order->id }}</h1>
-        <p class="text-gray-600 mb-4">Cliente: {{ $order->user?->name }} ({{ $order->user?->email }})</p>
+        <h1 class="text-2xl font-semibold mb-2 text-white">Pedido #{{ $order->id }}</h1>
+        <p class="text-gray-300 mb-4">Cliente: {{ $order->user?->name }} ({{ $order->user?->email }})</p>
 
         <div class="bg-white p-6 rounded-xl shadow-sm mb-6">
             <form action="{{ route('admin.orders.update', $order) }}" method="POST" class="flex items-center gap-3">

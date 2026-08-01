@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="p-6 max-w-lg">
-        <h1 class="text-2xl font-semibold mb-6">Nueva marca</h1>
+        <h1 class="text-2xl font-semibold mb-6 text-white">Nueva marca</h1>
         <form action="{{ route('admin.brands.store') }}" method="POST" class="space-y-4 bg-white p-6 rounded-xl shadow-sm">
             @csrf
             <div>

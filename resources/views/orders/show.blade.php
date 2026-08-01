@@ -23,7 +23,7 @@
         @endforeach
 
         @if ($order->address)
-            <div class="mt-4 border rounded p-4 bg-gray-50">
+            <div class="mt-4 border rounded p-4 bg-gray-50 text-gray-800">
                 <h2 class="font-semibold mb-2">Dirección de envío</h2>
                 <p>{{ $order->address->street }}</p>
                 <p>{{ $order->address->city }}, {{ $order->address->province }}</p>

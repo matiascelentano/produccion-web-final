@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="p-6 max-w-lg">
-        <h1 class="text-2xl font-semibold mb-6">Nueva categoría</h1>
+        <h1 class="text-2xl font-semibold mb-6 text-white">Nueva categoría</h1>
 
         <form action="{{ route('admin.categories.store') }}" method="POST" class="space-y-4 bg-white p-6 rounded-xl shadow-sm">
             @csrf

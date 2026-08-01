@@ -8,7 +8,7 @@
             <p class="bg-green-100 text-green-700 p-3 rounded mb-4">{{ session('success') }}</p>
         @endif
         <div class="flex items-center justify-between mb-6">
-            <h1 class="text-2xl font-semibold">Marcas</h1>
+            <h1 class="text-2xl font-semibold text-white">Marcas</h1>
             <a href="{{ route('admin.brands.create') }}" class="bg-gray-900 text-white px-4 py-2 rounded">Nueva marca</a>
         </div>
         <div class="bg-white rounded-xl shadow-sm overflow-hidden">

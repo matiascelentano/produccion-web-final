@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="p-6 max-w-lg">
-        <h1 class="text-2xl font-semibold mb-6">Editar marca</h1>
+        <h1 class="text-2xl font-semibold mb-6 text-white">Editar marca</h1>
         <form action="{{ route('admin.brands.update', $brand) }}" method="POST" class="space-y-4 bg-white p-6 rounded-xl shadow-sm">
             @csrf
             @method('PUT')

@@ -3,9 +3,9 @@
 @section('title', 'Mis direcciones')
 
 @section('content')
-    <div class="max-w-5xl mx-auto p-4">
+    <div class="max-w-5xl mx-auto p-4 text-gray-800">
         <div class="flex items-center justify-between mb-4">
-            <h1 class="text-2xl font-semibold">Mis direcciones</h1>
+            <h1 class="text-2xl font-semibold text-white">Mis direcciones</h1>
             <a href="{{ route('cart.index') }}" class="text-blue-600 hover:underline">Volver al carrito</a>
         </div>
 

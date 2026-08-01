@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="p-6">
-        <h1 class="text-2xl font-semibold mb-6">Pedidos</h1>
+        <h1 class="text-2xl font-semibold mb-6 text-white">Pedidos</h1>
         <div class="bg-white rounded-xl shadow-sm overflow-hidden">
             <table class="w-full text-left">
                 <thead class="bg-gray-50 border-b">
