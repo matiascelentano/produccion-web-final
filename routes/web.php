@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
@@ -14,6 +13,9 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\BrandController as AdminBrandController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Api\ProductApiController;
+use App\Http\Controllers\Api\OrderApiController;
+use App\Http\Controllers\Api\WishlistApiController;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -67,4 +69,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('brands', AdminBrandController::class)->except(['show']);
 
     Route::resource('orders', AdminOrderController::class)->only(['index', 'show', 'update']);
+});
+
+Route::prefix('api')->name('api.')->group(function () {
+    Route::get('/products', [ProductApiController::class, 'index'])->name('products.index');
+    Route::get('/products/{id}', [ProductApiController::class, 'show'])->name('products.show');
+    Route::get('/orders', [OrderApiController::class, 'index'])->name('orders.index');
+    Route::get('/wishlist', [WishlistApiController::class, 'index'])->name('wishlist.index');
 });
