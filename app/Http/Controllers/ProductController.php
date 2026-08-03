@@ -59,15 +59,25 @@ class ProductController extends Controller
             'images',
             'brand',
             'categories',
-            'reviews' => fn ($q) => $q->with('user')->latest(),
         ]);
+
+        $reviews = $product->reviews()
+            ->with('user')
+            ->latest()
+            ->paginate(5);
+
+        $user = auth()->user();
 
         // Para saber si mostrar el botón de "dejar reseña" (solo si el cliente ya compró el producto)
         $canReview = auth()->check()
-            && auth()->user()->orders()
+            && $user->orders()
                 ->whereHas('items', fn ($q) => $q->where('product_id', $product->id))
                 ->exists();
 
-        return view('products.show', compact('product', 'canReview'));
+        $userReview = auth()->check()
+            ? $product->reviews()->where('user_id', $user->id)->first()
+            : null;
+
+        return view('products.show', compact('product', 'reviews', 'canReview', 'userReview'));
     }
 }

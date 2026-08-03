@@ -144,6 +144,63 @@
                 @endif
             </div>
         </div>
+
+        <div class="mt-10 border-t pt-8">
+            <div class="flex items-center justify-between">
+                <h2 class="text-2xl font-semibold">Reseñas</h2>
+                @auth
+                    @if ($canReview)
+                        <span class="text-sm text-green-600">Puedes dejar una reseña</span>
+                    @endif
+                @endauth
+            </div>
+
+            @auth
+                @if ($canReview)
+                    <form action="{{ route('reviews.store', $product) }}" method="POST" class="mt-6 rounded-lg border border-gray-700 bg-gray-900/60 p-4">
+                        @csrf
+                        <div class="flex items-center gap-2">
+                            <label for="rating" class="text-sm font-medium">Puntuación</label>
+                            <select name="rating" id="rating" class="rounded border border-gray-700 bg-gray-800 px-3 py-2 text-sm" required>
+                                <option value="">Selecciona</option>
+                                @for ($i = 5; $i >= 1; $i--)
+                                    <option value="{{ $i }}" {{ old('rating', $userReview?->rating) == $i ? 'selected' : '' }}>{{ $i }} estrella{{ $i > 1 ? 's' : '' }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <textarea name="comment" rows="4" class="mt-3 w-full rounded border border-gray-700 bg-gray-800 px-3 py-2 text-sm" placeholder="Cuéntanos tu experiencia con este producto...">{{ old('comment', $userReview?->comment) }}</textarea>
+                        <button type="submit" class="mt-3 rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">{{ $userReview ? 'Actualizar reseña' : 'Publicar reseña' }}</button>
+                    </form>
+                @elseif($userReview)
+                    <p class="mt-4 text-sm text-gray-400">Ya dejaste una reseña para este producto.</p>
+                @endif
+            @endauth
+
+            @if ($reviews->isEmpty())
+                <p class="mt-6 text-sm text-gray-400">Aún no hay reseñas para este producto.</p>
+            @else
+                <div class="mt-6 space-y-4">
+                    @foreach ($reviews as $review)
+                        <div class="rounded-lg border border-gray-700 bg-gray-900/40 p-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="font-semibold">{{ $review->user?->name ?? 'Usuario' }}</p>
+                                    <p class="text-sm text-gray-400">{{ $review->created_at->format('d/m/Y') }}</p>
+                                </div>
+                                <span class="text-sm font-semibold text-yellow-400">{{ str_repeat('★', $review->rating) }}</span>
+                            </div>
+                            @if ($review->comment)
+                                <p class="mt-3 text-sm text-gray-300">{{ $review->comment }}</p>
+                            @endif
+                        </div>
+                    @endforeach
+                </div>
+
+                <div class="mt-6">
+                    {{ $reviews->links() }}
+                </div>
+            @endif
+        </div>
     </div>
 
     <script>

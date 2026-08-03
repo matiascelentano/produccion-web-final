@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
@@ -52,6 +53,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/productos/{product}/checkout', [OrderController::class, 'checkoutSingle'])->name('orders.checkoutSingle');
     Route::post('/productos/{product}/comprar', [OrderController::class, 'storeSingle'])->name('orders.storeSingle');
+    Route::post('/productos/{product}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
     Route::get('/checkout', [OrderController::class, 'checkoutCart'])->name('orders.checkoutCart');
     Route::post('/checkout', [OrderController::class, 'storeFromCart'])->name('orders.storeFromCart');

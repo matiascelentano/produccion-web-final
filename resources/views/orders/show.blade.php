@@ -13,13 +13,29 @@
         <p class="text-gray-600 mb-4">Estado: <span class="font-semibold">{{ $order->status->label() }}</span></p>
 
         @foreach ($order->items as $item)
-            <div class="border rounded p-4 mb-2 flex justify-between items-center">
-                <div>
-                    <p class="font-semibold">{{ $item->product->name }}</p>
-                    <p class="text-sm text-gray-500">Cantidad: {{ $item->quantity }} × {{ '$' . number_format($item->unit_price, 2, ',', '.') }}</p>
+            <a href="{{ route('products.show', $item->product) }}" class="block border rounded p-4 mb-2 bg-white hover:bg-black transition">
+                <div class="flex justify-between items-start gap-4">
+                    <div class="flex items-center gap-3">
+                        @php
+                            $thumbnail = $item->product->primaryImage?->url ?? $item->product->images()->first()?->url ?? null;
+                        @endphp
+
+                        @if ($thumbnail)
+                            <img src="{{ $thumbnail }}" alt="{{ $item->product->name }}" class="h-16 w-16 rounded object-cover border">
+                        @else
+                            <div class="h-16 w-16 rounded border bg-gray-100 flex items-center justify-center text-xs text-gray-500">
+                                Sin foto
+                            </div>
+                        @endif
+
+                        <div>
+                            <p class="font-semibold text-blue-600 hover:underline">{{ $item->product->name }}</p>
+                            <p class="text-sm text-gray-500">Cantidad: {{ $item->quantity }} × {{ '$' . number_format($item->unit_price, 2, ',', '.') }}</p>
+                        </div>
+                    </div>
+                    <p class="font-semibold text-gray-700">{{ '$' . number_format($item->quantity * $item->unit_price, 2, ',', '.') }}</p>
                 </div>
-                <p class="font-semibold">{{ '$' . number_format($item->quantity * $item->unit_price, 2, ',', '.') }}</p>
-            </div>
+            </a>
         @endforeach
 
         @if ($order->address)
