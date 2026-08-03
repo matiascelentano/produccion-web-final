@@ -38,11 +38,11 @@
             </div>
         @endif
         @if (!blank($cart) && $cart->items->isNotEmpty())
-            <div class="mt-6 border-t pt-4">
+            <div class="mt-6 border-t pt-4 text-gray-800 ">
                 <div class="grid lg:grid-cols-[1.2fr_0.8fr] gap-6">
                     <div class="border rounded-xl p-4 bg-gray-50">
                         <div class="flex items-center justify-between mb-3">
-                            <h2 class="text-lg font-semibold">Envío</h2>
+                            <h2 class="text-xl font-semibold">Envío</h2>
                             <a href="{{ route('addresses.index') }}" class="text-sm text-blue-600 hover:underline">Gestionar direcciones</a>
                         </div>
 
@@ -66,16 +66,16 @@
                     </div>
 
                     <div class="border rounded-xl p-4 bg-white shadow-sm">
-                        <h2 class="text-lg font-semibold mb-3">Resumen</h2>
-                        <div class="flex justify-between text-sm text-gray-600">
+                        <h2 class="text-xl font-semibold mb-3">Resumen</h2>
+                        <div class="flex justify-between text-lg text-gray-600">
                             <span>Subtotal</span>
                             <span>{{ '$' . number_format($cart->total, 2, ',', '.') }}</span>
                         </div>
-                        <div class="flex justify-between text-sm text-gray-600 mt-2">
+                        <div class="flex justify-between text-lg text-gray-600 mt-2">
                             <span>Envío</span>
                             <span>Gratis</span>
                         </div>
-                        <div class="border-t mt-3 pt-3 flex justify-between font-semibold">
+                        <div class="border-t mt-3 pt-3 flex justify-between font-semibold text-xl">
                             <span>Total</span>
                             <span>{{ '$' . number_format($cart->total, 2, ',', '.') }}</span>
                         </div>

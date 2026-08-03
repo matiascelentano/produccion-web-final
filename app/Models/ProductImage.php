@@ -21,10 +21,21 @@ class ProductImage extends Model
         return $this->belongsTo(Product::class);
     }
 
-    // Accessor para la URL completa
-    protected function url(): Attribute{
+    protected function url(): Attribute
+    {
         return Attribute::make(
-            get: fn () => str_starts_with($this->path, 'http') ? $this->path : asset($this->path),
+            get: function () {
+                //Verificando si la ruta es una URL completa
+                if (str_starts_with($this->path, 'http')) {
+                    return $this->path;
+                }
+                //Verificando si la ruta es una ruta de almacenamiento
+                if (Storage::disk('public')->exists($this->path)) {
+                    return Storage::disk('public')->url($this->path);
+                }
+                //Si la ruta no es una URL completa ni una ruta de almacenamiento, se asume que es una ruta relativa y se genera la URL completa utilizando la función asset()
+                return asset($this->path);
+            },
         );
-    }
+}
 }
