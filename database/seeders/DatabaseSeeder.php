@@ -25,6 +25,15 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
             'role' => 'admin',
         ]);
+
+        User::factory()->create([
+            'name' => 'Client',
+            'last_name' => 'User',
+            'birth_date' => '1995-05-05',
+            'username' => 'client.user',
+            'email' => 'cliente@example.com',
+            'role' => 'cliente',
+        ]);
         // Seed brands, categories and products (in this order)
         $this->call([
             BrandSeeder::class,
