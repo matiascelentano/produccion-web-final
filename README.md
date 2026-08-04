@@ -1,120 +1,493 @@
-Arcade Shop — Sistema de E-commerce
+# Arcade Shop
 
-Trabajo Final — Desarrollo de Aplicación Web con Laravel.
+## Trabajo Final — Desarrollo de Aplicación Web con Laravel
 
-1. Descripción del proyecto y alcance funcional
+Arcade Shop es una tienda online especializada en repuestos y periféricos arcade (joysticks, botones, fightpads, PCBs, adaptadores y accesorios), desarrollada utilizando Laravel bajo el patrón arquitectónico MVC.
 
-Arcade Shop es una tienda en línea especializada en repuestos y periféricos arcade (joysticks, botones, fightpads, PCBs/adaptadores y accesorios), desarrollada con Laravel siguiendo el patrón MVC.
+La aplicación implementa un sistema completo de e-commerce con gestión de usuarios, catálogo de productos, carrito de compras, wishlist, pedidos, reseñas y un panel administrativo.
 
-La aplicación cubre dos roles principales:
+---
 
-Cliente / Visitante: puede registrarse, iniciar sesión, navegar el catálogo filtrando por categoría y marca, ordenar por precio/antigüedad, agregar productos a una wishlist, gestionar un carrito de compras, comprar un producto individual o finalizar la compra de todo el carrito, ver el historial de sus pedidos, y dejar reseñas de productos que haya comprado.
-Administrador: gestiona el CRUD completo de categorías, marcas y productos (incluyendo carga de múltiples imágenes por producto), y visualiza/actualiza el estado de los pedidos realizados por los clientes.
+# Tabla de contenidos
 
-Un subconjunto de esta funcionalidad (catálogo, detalle de producto, pedidos del usuario autenticado y wishlist) además se expone como una API REST que devuelve JSON, como ejercicio introductorio sobre el tema (ver sección 6).
+* [Descripción del proyecto](#descripción-del-proyecto)
+* [Alcance funcional](#alcance-funcional)
+* [Tecnologías utilizadas](#tecnologías-utilizadas)
+* [Instalación](#instalación)
+* [Credenciales de prueba](#credenciales-de-prueba)
+* [Modelo de datos](#modelo-de-datos)
+* [Decisiones de diseño](#decisiones-de-diseño)
+* [Rutas principales](#rutas-principales)
+* [API REST](#api-rest)
 
-Fuera de alcance / supuestos
-No se implementa una pasarela de pago real: el flujo de "compra" simula el proceso pidiendo datos de contacto y dirección de envío, y genera el pedido directamente en estado pendiente.
-La autenticación es 100% de sesión (el middleware auth nativo de Laravel); la API reutiliza esa misma sesión y no implementa tokens ni Sanctum.
-El envío de emails (verificación, notificaciones de pedido) no está implementado; el registro de usuarios no requiere verificación de correo para operar.
+---
 
-2. Instrucciones de instalación
-Requisitos previos
-PHP ^8.2
-Composer
-Node.js y npm
-MySQL (u otro motor compatible con Eloquent)
+# Descripción del proyecto
 
-Pasos
+Arcade Shop permite administrar una tienda virtual dedicada a productos relacionados con sistemas arcade.
 
-# 1. Clonar el repositorio
+La aplicación cuenta con dos tipos principales de usuarios:
+
+* Cliente / Visitante.
+* Administrador.
+
+El sistema fue desarrollado siguiendo la arquitectura MVC de Laravel, utilizando Eloquent ORM para la gestión de datos y Blade como motor de vistas.
+
+---
+
+# Alcance funcional
+
+## Cliente / Visitante
+
+Los usuarios pueden:
+
+* Registrarse e iniciar sesión.
+* Navegar el catálogo de productos.
+* Buscar productos.
+* Filtrar productos por categoría y marca.
+* Ordenar productos por precio o antigüedad.
+* Visualizar detalles de cada producto.
+* Agregar productos a una wishlist.
+* Administrar un carrito de compras persistente.
+* Comprar productos individuales.
+* Finalizar la compra completa del carrito.
+* Consultar el historial de pedidos.
+* Visualizar el detalle de cada pedido.
+* Dejar reseñas únicamente sobre productos adquiridos.
+
+---
+
+## Administrador
+
+El administrador cuenta con un panel privado que permite:
+
+* Gestionar categorías mediante CRUD.
+* Gestionar marcas mediante CRUD.
+* Gestionar productos mediante CRUD.
+* Cargar múltiples imágenes por producto.
+* Consultar pedidos realizados por clientes.
+* Actualizar el estado de los pedidos.
+
+El acceso al panel administrativo está protegido mediante middleware de autorización por rol.
+
+---
+
+# API REST
+
+Una parte del sistema está disponible mediante una API REST que devuelve respuestas en formato JSON.
+
+La API incluye:
+
+* Consulta del catálogo.
+* Consulta del detalle de productos.
+* Consulta de pedidos del usuario autenticado.
+* Gestión de wishlist.
+
+La autenticación utiliza la misma sesión del sitio web. No se implementan tokens ni Sanctum.
+
+---
+
+# Fuera de alcance
+
+Para mantener el alcance del proyecto definido se establecieron los siguientes supuestos:
+
+* No se implementa una pasarela de pago real.
+* El proceso de compra simula el pago y genera el pedido directamente en estado pendiente.
+* La autenticación funciona mediante sesiones de Laravel.
+* No se utilizan tokens de autenticación.
+* No se implementa verificación de correo electrónico.
+* No se envían emails de confirmación o notificaciones.
+
+---
+
+# Tecnologías utilizadas
+
+| Tecnología   | Uso                            |
+| ------------ | ------------------------------ |
+| Laravel      | Framework backend              |
+| PHP 8.2      | Lenguaje principal             |
+| MySQL        | Base de datos                  |
+| Eloquent ORM | Manejo de modelos y relaciones |
+| Blade        | Motor de plantillas            |
+| Bootstrap    | Diseño de interfaz             |
+| JavaScript   | Interactividad frontend        |
+| Vite         | Compilación de assets          |
+
+---
+
+# Instalación
+
+## Requisitos previos
+
+Antes de instalar el proyecto es necesario contar con:
+
+* PHP ^8.2
+* Composer
+* Node.js
+* npm
+* MySQL u otro motor compatible con Eloquent
+
+---
+
+## Instalación del proyecto
+
+Clonar el repositorio:
+
+```bash
 git clone <url-del-repositorio>
+
 cd arcade-shop
+```
 
-# 2. Instalar dependencias de PHP
+Instalar dependencias de PHP:
+
+```bash
 composer install
+```
 
-# 3. Copiar el archivo de entorno y generar la clave de la aplicación
+Crear archivo de configuración:
+
+```bash
 cp .env.example .env
+```
+
+Generar la clave de aplicación:
+
+```bash
 php artisan key:generate
+```
 
-# 4. Configurar la base de datos en el archivo .env
-#    DB_DATABASE, DB_USERNAME y DB_PASSWORD según tu entorno local
+Configurar la conexión a la base de datos en el archivo `.env`:
 
-# 5. Correr migraciones y seeders
+```env
+DB_DATABASE=
+DB_USERNAME=
+DB_PASSWORD=
+```
+
+Ejecutar migraciones y seeders:
+
+```bash
 php artisan migrate --seed
+```
 
-# 6. Crear el symlink de storage (necesario para ver las imágenes de productos)
+Crear enlace simbólico para almacenamiento:
+
+```bash
 php artisan storage:link
+```
 
-# 7. Instalar dependencias de Node y compilar los assets
+Instalar dependencias frontend:
+
+```bash
 npm install
+```
+
+Compilar assets:
+
+```bash
 npm run dev
+```
 
-# 8. Levantar el servidor de desarrollo (en otra terminal)
+Iniciar servidor:
+
+```bash
 php artisan serve
+```
 
-Con esto, la aplicación queda disponible en http://127.0.0.1:8000 (o el puerto que indique php artisan serve).
+La aplicación estará disponible en:
 
-Importante: la variable APP_URL en tu .env debe coincidir exactamente con la URL y el puerto donde accedés al sitio (protocolo, host y puerto), o las imágenes servidas desde storage/ no se van a visualizar correctamente.
+```
+http://127.0.0.1:8000
+```
 
-3. Credenciales de prueba
+> Importante: la variable `APP_URL` del archivo `.env` debe coincidir exactamente con la URL utilizada para acceder al sistema. De lo contrario, las imágenes almacenadas en `storage` pueden no visualizarse correctamente.
 
-El seeder actual (database/seeders/DatabaseSeeder.php) crea automáticamente una cuenta de administrador y cliente:
+---
 
-Rol	            Email	                        Contraseña
-Administrador	test@example.com	            password
-Cliente         cliente@example.com             password
+# Credenciales de prueba
 
-4. Diagrama Entidad-Relación
+El seeder principal (`DatabaseSeeder.php`) genera automáticamente usuarios para probar los diferentes roles.
 
-El diagrama E-R se encuentra en docs/diagrama e-r.png.
+| Rol           | Email                                             | Contraseña |
+| ------------- | ------------------------------------------------- | ---------- |
+| Administrador | [test@example.com](mailto:test@example.com)       | password   |
+| Cliente       | [cliente@example.com](mailto:cliente@example.com) | password   |
 
-Resumen de las relaciones principales:
+---
 
-users (1) → (N) orders, addresses, reviews — un usuario puede tener múltiples pedidos, direcciones y reseñas.
-users (N) ↔ (N) products a través de wishlists — pivote simple sin atributos propios.
-categories (N) ↔ (N) products a través de category_product — un producto puede pertenecer a varias categorías.
-brands (1) → (N) products — una marca tiene muchos productos, pero cada producto tiene una sola marca (o ninguna).
-products (1) → (N) product_images — galería de imágenes por producto.
-orders (1) → (N) order_items — cada ítem de un pedido guarda quantity y unit_price "congelados" al momento de la compra, para que cambios futuros en el precio del producto no alteren pedidos históricos.
-orders.status está modelado como un Enum de PHP (App\Enums\OrderStatus) con lógica de transición de estados válida encapsulada en el propio Enum (pendiente → pagado → enviado → entregado, o cancelado en cualquier punto antes de enviado).
-carts (1) → (N) cart_items — carrito de compras persistente por usuario, independiente de la wishlist.
+# Modelo de datos
 
-5. Decisiones de diseño relevantes
-Wishlist y category_product sin Model dedicado: al ser pivotes N:M simples sin atributos propios más allá de las claves foráneas, se resuelven con belongsToMany() directo sobre el nombre de la tabla, sin necesitar una clase Eloquent intermedia.
-order_items con Model propio: a diferencia de la wishlist, esta pivote sí tiene atributos propios (quantity, unit_price) y se consulta de forma independiente (por ejemplo, para reportes de productos más vendidos), por lo que se modela con hasMany/belongsTo en vez de belongsToMany.
-Imágenes de producto: los productos cargados por seeders usan assets estáticos en public/images/, mientras que las imágenes subidas por el administrador desde el panel se guardan en storage/app/public/ (accesibles vía el symlink public/storage). El accessor ProductImage::url() resuelve automáticamente cuál de los dos casos aplica según dónde exista físicamente el archivo.
-Middleware de autorización por rol: EnsureUserIsAdmin (alias admin) restringe todo el prefijo /admin a usuarios con role = 'admin', complementando al middleware auth nativo de Laravel (sin usar Sanctum ni paquetes de tokens).
-Carrito vs. Wishlist: son dos entidades separadas (carts/cart_items vs. wishlists) porque representan intenciones distintas — el carrito es la intención inmediata de compra con cantidades, mientras que la wishlist es una lista de deseos sin cantidad ni relación con el proceso de checkout.
-Transacciones en el checkout: tanto la compra individual como la compra de todo el carrito envuelven la creación del pedido, sus ítems y el descuento de stock dentro de una transacción de base de datos (DB::transaction), evitando pedidos parciales si algo falla a mitad de camino.
+El diagrama Entidad-Relación se encuentra ubicado en:
 
-6. Rutas principales
+```
+docs/diagrama e-r.png
+```
 
-Sitio (vistas Blade)
-Método	Ruta	Descripción
-GET	/	Home
-GET	/productos	Catálogo (con filtros por categoría, marca, búsqueda y orden)
-GET	/productos/{product}	Detalle de producto
-GET, POST	/login, /registro	Autenticación
-POST	/logout	Cerrar sesión
-GET, POST, DELETE	/carrito	Ver / agregar / quitar productos del carrito
-GET, POST, DELETE	/wishlist	Ver / agregar / quitar productos de la wishlist
-GET	/mis-pedidos, /mis-pedidos/{order}	Historial y detalle de pedidos del cliente
-POST	/productos/{product}/comprar	Compra directa de un producto
-POST	/checkout	Finalizar compra de todo el carrito
-Panel de administración (/admin, requiere rol admin)
-Método	Ruta	Descripción
-GET	/admin/dashboard	Panel principal con estadísticas
-Resource	/admin/products	CRUD de productos (incluye carga de imágenes)
-Resource	/admin/categories	CRUD de categorías
-Resource	/admin/brands	CRUD de marcas
-GET, PUT	/admin/orders, /admin/orders/{order}	Listado, detalle y actualización de estado de pedidos
-API REST (JSON, reutiliza la sesión del sitio)
-Método	Ruta	Descripción
-GET	/api/products	Listado paginado del catálogo
-GET	/api/products/{id}	Detalle de un producto (404 si no existe)
-GET	/api/orders	Pedidos del usuario autenticado (401 si no hay sesión)
-GET	/api/wishlist	Wishlist del usuario autenticado
-POST	/api/wishlist	Agrega un producto a la wishlist
-DELETE	/api/wishlist	Remueve un producto de la wishlist
+---
+
+## Relaciones principales
+
+### Usuarios
+
+```
+users (1) → (N) orders
+users (1) → (N) addresses
+users (1) → (N) reviews
+```
+
+Un usuario puede tener múltiples pedidos, direcciones y reseñas.
+
+---
+
+### Wishlist
+
+```
+users (N) ↔ (N) products
+```
+
+La relación se realiza mediante la tabla pivote:
+
+```
+wishlists
+```
+
+---
+
+### Categorías
+
+```
+categories (N) ↔ (N) products
+```
+
+La relación utiliza:
+
+```
+category_product
+```
+
+Un producto puede pertenecer a múltiples categorías.
+
+---
+
+### Marcas
+
+```
+brands (1) → (N) products
+```
+
+Una marca puede tener múltiples productos.
+
+---
+
+### Imágenes
+
+```
+products (1) → (N) product_images
+```
+
+Cada producto puede contener múltiples imágenes.
+
+---
+
+### Pedidos
+
+```
+orders (1) → (N) order_items
+```
+
+Cada pedido contiene uno o varios productos.
+
+Los elementos del pedido almacenan:
+
+* Cantidad.
+* Precio unitario al momento de compra.
+
+Esto permite conservar el historial aunque el precio del producto cambie posteriormente.
+
+---
+
+### Carrito
+
+```
+carts (1) → (N) cart_items
+```
+
+El carrito es independiente de la wishlist y mantiene las cantidades seleccionadas para la compra.
+
+---
+
+# Estados de pedidos
+
+Los estados se manejan mediante un Enum:
+
+```
+App\Enums\OrderStatus
+```
+
+Las transiciones válidas son:
+
+```
+Pendiente
+    ↓
+Pagado
+    ↓
+Enviado
+    ↓
+Entregado
+```
+
+También existe la posibilidad de cancelar un pedido antes de que sea enviado.
+
+---
+
+# Decisiones de diseño
+
+## Wishlist y category_product
+
+Ambas relaciones se implementan como tablas pivote simples mediante `belongsToMany()`.
+
+No poseen modelos Eloquent propios debido a que no contienen atributos adicionales.
+
+---
+
+## Order Items
+
+A diferencia de las tablas pivote simples, `order_items` posee información propia:
+
+* quantity
+* unit_price
+
+Además, puede consultarse de forma independiente para generar reportes o estadísticas.
+
+Por este motivo se implementó como un modelo Eloquent separado.
+
+---
+
+## Gestión de imágenes
+
+Los productos pueden obtener imágenes desde dos ubicaciones:
+
+Productos cargados mediante seeders:
+
+```
+public/images/
+```
+
+Productos cargados desde el panel administrativo:
+
+```
+storage/app/public/
+```
+
+El método `ProductImage::url()` determina automáticamente la ubicación correcta del archivo.
+
+---
+
+## Middleware de autorización
+
+El panel administrativo utiliza:
+
+```
+EnsureUserIsAdmin
+```
+
+Este middleware verifica que el usuario autenticado tenga:
+
+```
+role = admin
+```
+
+Además, se mantiene la protección estándar mediante:
+
+```
+auth middleware
+```
+
+---
+
+## Carrito y Wishlist
+
+Ambas funcionalidades están separadas porque representan diferentes intenciones del usuario.
+
+Carrito:
+
+* Productos destinados a una compra.
+* Maneja cantidades.
+* Participa en el checkout.
+
+Wishlist:
+
+* Productos guardados para futuro interés.
+* No posee cantidades.
+* No participa en la compra.
+
+---
+
+## Checkout y transacciones
+
+El proceso de compra utiliza:
+
+```php
+DB::transaction()
+```
+
+Esto garantiza que:
+
+* La creación del pedido.
+* La creación de sus productos.
+* La actualización del stock.
+
+Se realicen correctamente como una única operación.
+
+---
+
+# Rutas principales
+
+## Sitio web
+
+| Método          | Ruta                           | Descripción          |
+| --------------- | ------------------------------ | -------------------- |
+| GET             | `/`                            | Página principal     |
+| GET             | `/productos`                   | Catálogo             |
+| GET             | `/productos/{product}`         | Detalle del producto |
+| GET/POST        | `/login`                       | Inicio de sesión     |
+| GET/POST        | `/registro`                    | Registro             |
+| POST            | `/logout`                      | Cierre de sesión     |
+| GET/POST/DELETE | `/carrito`                     | Gestión del carrito  |
+| GET/POST/DELETE | `/wishlist`                    | Gestión wishlist     |
+| GET             | `/mis-pedidos`                 | Historial de pedidos |
+| GET             | `/mis-pedidos/{order}`         | Detalle del pedido   |
+| POST            | `/productos/{product}/comprar` | Compra individual    |
+| POST            | `/checkout`                    | Compra del carrito   |
+
+---
+
+# Panel administrativo
+
+Todas las rutas requieren autenticación y rol administrador.
+
+| Método   | Ruta                | Descripción        |
+| -------- | ------------------- | ------------------ |
+| GET      | `/admin/dashboard`  | Dashboard          |
+| Resource | `/admin/products`   | CRUD productos     |
+| Resource | `/admin/categories` | CRUD categorías    |
+| Resource | `/admin/brands`     | CRUD marcas        |
+| GET/PUT  | `/admin/orders`     | Gestión de pedidos |
+
+---
+
+# API REST
+
+Todas las respuestas utilizan formato JSON.
+
+| Método | Endpoint             | Descripción                     |
+| ------ | -------------------- | ------------------------------- |
+| GET    | `/api/products`      | Lista paginada de productos     |
+| GET    | `/api/products/{id}` | Detalle de producto             |
+| GET    | `/api/orders`        | Pedidos del usuario autenticado |
+| GET    | `/api/wishlist`      | Wishlist del usuario            |
+| POST   | `/api/wishlist`      | Agregar producto                |
+| DELETE | `/api/wishlist`      | Eliminar producto               |
+
+---
