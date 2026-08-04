@@ -1,0 +1,390 @@
+{
+	"info": {
+		"_postman_id": "7299b412-5112-43ee-b7cd-cef207193277",
+		"name": "Arcade Shop - API REST",
+		"description": "Colección de endpoints de la API REST\n\nCambiar la variable de base_url por la ingresada en el archivo .ENV",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49388713",
+		"_collection_link": "https://matias256-4917423.postman.co/workspace/e26f6c03-8892-44a6-850c-c40cca5ae9db/collection/49388713-7299b412-5112-43ee-b7cd-cef207193277?action=share&source=collection_link&creator=49388713"
+	},
+	"item": [
+		{
+			"name": "GET /api/products (listado del catálogo)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code es 200', function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('La respuesta tiene la clave data', function () {",
+							"    const json = pm.response.json();",
+							"    pm.expect(json).to.have.property('data');",
+							"    pm.expect(json.data).to.be.an('array');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/products",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/products/{id} (detalle - existente)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code es 200', function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('La respuesta tiene id y name', function () {",
+							"    const json = pm.response.json();",
+							"    pm.expect(json.data).to.have.property('id');",
+							"    pm.expect(json.data).to.have.property('name');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/products/{{product_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"products",
+						"{{product_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/products/{id} (detalle - inexistente, 404)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code es 404', function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test('La respuesta tiene un mensaje de error', function () {",
+							"    const json = pm.response.json();",
+							"    pm.expect(json).to.have.property('message');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/products/999999",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"products",
+						"999999"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/orders (sin sesion, 401)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code es 401 sin sesion iniciada', function () {",
+							"    pm.response.to.have.status(401);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/orders",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /login (obtener CSRF token)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"const xsrfCookie = pm.cookies.get('XSRF-TOKEN');",
+							"if (xsrfCookie) {",
+							"    pm.environment.set('csrf_token', decodeURIComponent(xsrfCookie));",
+							"    console.log('CSRF token saved:', decodeURIComponent(xsrfCookie));",
+							"} else {",
+							"    console.warn('XSRF-TOKEN cookie not found in response.');",
+							"}"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"login"
+					]
+				},
+				"description": "Primer paso del flujo de login. Laravel devuelve la cookie XSRF-TOKEN en esta respuesta. El script post-respuesta la guarda en la variable de entorno 'csrf_token' para que POST /login pueda usarla en el header X-XSRF-TOKEN."
+			},
+			"response": []
+		},
+		{
+			"name": "POST /login (iniciar sesion para probar /api/orders)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Login exitoso o redirige correctamente (200, 302)', function () {",
+							"    // Laravel may redirect (302) or return 200 depending on configuration.",
+							"    // A 419 means CSRF token mismatch — run GET /login first to populate the cookie jar.",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 302]);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"// CSRF token is set by the GET /login request that must run before this one.",
+							"// If csrf_token is missing, run GET /login (obtener CSRF token) first.",
+							"const token = pm.environment.get('csrf_token');",
+							"if (!token) {",
+							"    throw new Error('csrf_token is not set. Run \"GET /login (obtener CSRF token)\" first.');",
+							"}",
+							"console.log('Using CSRF token:', token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "X-XSRF-TOKEN",
+						"value": "{{csrf_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "test@example.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"login"
+					]
+				},
+				"description": "Postman guarda la cookie de sesión automáticamente (con 'Cookie jar' activado en el entorno). Correr este request antes del siguiente para autenticarse antes de pedir /api/orders."
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/wishlist (listar, con sesion)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code es 200', function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('La respuesta tiene la clave data', function () {",
+							"    const json = pm.response.json();",
+							"    pm.expect(json).to.have.property('data');",
+							"    pm.expect(json.data).to.be.an('array');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/wishlist",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"wishlist"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/orders (con sesion iniciada)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code es 200 con sesion iniciada', function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('La respuesta tiene la clave data', function () {",
+							"    const json = pm.response.json();",
+							"    pm.expect(json).to.have.property('data');",
+							"    pm.expect(json.data).to.be.an('array');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/orders",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:8000",
+			"type": "string"
+		},
+		{
+			"key": "product_id",
+			"value": "1",
+			"type": "string"
+		}
+	]
+}
