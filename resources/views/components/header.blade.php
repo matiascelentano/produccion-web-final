@@ -5,8 +5,8 @@
         <div class="max-w-7xl mx-auto flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
 
             <div class="flex items-center gap-3 lg:contents">
-                <a href="{{ route('home') }}" class="font-pixel text-2xl lg:text-3xl text-black shrink-0">
-                    Mi Tienda
+                <a href="{{ route('home') }}" class="font-pixel text-2xl lg:text-3xl text-black shrink-0 hover:text-white transition">
+                    Arcade Shop
                 </a>
 
                 <form action="{{ route('products.index') }}" method="GET" class="flex-1 lg:max-w-2xl">

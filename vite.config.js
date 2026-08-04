@@ -14,5 +14,13 @@ export default defineConfig({
         watch: {
             ignored: ['**/storage/framework/views/**'],
         },
+        proxy: {
+            // Proxy font requests to the Laravel dev server so fonts in /public are served during Vite dev
+            '/fonts': {
+                target: 'http://127.0.0.1:8000',
+                changeOrigin: true,
+                secure: false,
+            },
+        },
     },
 });
