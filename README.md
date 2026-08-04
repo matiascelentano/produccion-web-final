@@ -81,7 +81,7 @@ La API incluye:
 * Consulta del catálogo.
 * Consulta del detalle de productos.
 * Consulta de pedidos del usuario autenticado.
-* Gestión de wishlist.
+* Consulta de wishlist.
 
 La autenticación utiliza la misma sesión del sitio web. No se implementan tokens ni Sanctum.
 
